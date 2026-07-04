@@ -1,5 +1,7 @@
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 def get_column_groups(X):
@@ -28,3 +30,33 @@ def build_missing_value_preprocessor(X):
     )
 
     return missing_value_preprocessor
+
+
+def build_full_preprocessor(X):
+    categorical_columns, numerical_columns = get_column_groups(X)
+
+    numerical_pipeline = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+        ]
+    )
+
+    categorical_pipeline = Pipeline(
+        steps=[
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            (
+                "encoder",
+                OneHotEncoder(handle_unknown="ignore", sparse_output=False),
+            ),
+        ]
+    )
+
+    full_preprocessor = ColumnTransformer(
+        transformers=[
+            ("numerical", numerical_pipeline, numerical_columns),
+            ("categorical", categorical_pipeline, categorical_columns),
+        ]
+    )
+
+    return full_preprocessor
