@@ -18,6 +18,10 @@ dist/
 build/
 *.egg-info/
 
+# Raw datasets
+ml-service/data/raw/*
+!ml-service/data/raw/.gitkeep
+
 # Environment variables and secrets
 .env
 .env.*
