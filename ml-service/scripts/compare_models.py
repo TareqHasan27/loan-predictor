@@ -9,6 +9,7 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
+from xgboost import XGBClassifier
 
 from src.data_loader import load_loan_dataset
 from src.preprocessing import build_full_preprocessor
@@ -79,6 +80,18 @@ def main():
                 n_estimators=200,
                 random_state=42,
                 class_weight="balanced",
+            ),
+        ),
+        (
+            "XGBoost",
+            XGBClassifier(
+                n_estimators=200,
+                learning_rate=0.05,
+                max_depth=3,
+                subsample=0.8,
+                colsample_bytree=0.8,
+                eval_metric="logloss",
+                random_state=42,
             ),
         ),
     ]
