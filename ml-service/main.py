@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 
+from src.model_info import load_model_info
 from src.predictor import predict_loan_approval
 from src.schemas import LoanApplicationRequest, LoanPredictionResponse
 
@@ -24,6 +25,18 @@ def health_check():
         "status": "ok",
         "service": "ml-service"
     }
+
+
+@app.get("/model-info")
+def model_info():
+    try:
+        return load_model_info()
+
+    except FileNotFoundError as error:
+        raise HTTPException(
+            status_code=500,
+            detail=str(error),
+        )
 
 
 @app.post("/predict", response_model=LoanPredictionResponse)
