@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const healthRoutes = require("./routes/health.routes");
+const authRoutes = require("./routes/auth.routes");
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
 const { testDbConnection } = require("./config/db");
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use("/", healthRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
