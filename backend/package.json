@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "db:create-users": "node scripts/createUsersTable.js"
+    "db:create-users": "node scripts/createUsersTable.js",
+    "test:user-model": "node scripts/testUserModel.js"
   },
   "keywords": [
     "express",
