@@ -3,25 +3,34 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const healthRoutes = require("./routes/health.routes");
+const notFound = require("./middleware/notFound");
+const errorHandler = require("./middleware/errorHandler");
+const { testDbConnection } = require("./config/db");
+
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "Smart Loan Approval Predictor backend is running",
-  });
-});
+app.use("/", healthRoutes);
 
-app.get("/health", (req, res) => {
-  res.json({
-    status: "ok",
-    service: "backend",
-  });
-});
+app.use(notFound);
+app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await testDbConnection();
+
+    app.listen(PORT, () => {
+      console.log(`Backend server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start backend server");
+    console.error(error.message);
+    process.exit(1);
+  }
+};
+
+startServer();
