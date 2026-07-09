@@ -1,4 +1,8 @@
-const { createPrediction } = require("../models/Prediction");
+const {
+  createPrediction,
+  findPredictionsByUserId,
+} = require("../models/Prediction");
+
 const { predictLoanApproval } = require("../services/mlService");
 
 const REQUIRED_FIELDS = [
@@ -17,7 +21,10 @@ const REQUIRED_FIELDS = [
 
 const validatePredictionRequest = (body) => {
   const missingFields = REQUIRED_FIELDS.filter(
-    (field) => body[field] === undefined || body[field] === null || body[field] === ""
+    (field) =>
+      body[field] === undefined ||
+      body[field] === null ||
+      body[field] === ""
   );
 
   if (missingFields.length > 0) {
@@ -62,6 +69,21 @@ const createLoanPrediction = async (req, res, next) => {
   }
 };
 
+const getPredictionHistory = async (req, res, next) => {
+  try {
+    const predictions = await findPredictionsByUserId(req.user.id);
+
+    res.json({
+      success: true,
+      count: predictions.length,
+      predictions,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createLoanPrediction,
+  getPredictionHistory,
 };
