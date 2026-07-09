@@ -5,44 +5,8 @@ const {
 
 const { predictLoanApproval } = require("../services/mlService");
 
-const REQUIRED_FIELDS = [
-  "gender",
-  "married",
-  "dependents",
-  "education",
-  "self_employed",
-  "applicant_income",
-  "coapplicant_income",
-  "loan_amount",
-  "loan_amount_term",
-  "credit_history",
-  "property_area",
-];
-
-const validatePredictionRequest = (body) => {
-  const missingFields = REQUIRED_FIELDS.filter(
-    (field) =>
-      body[field] === undefined ||
-      body[field] === null ||
-      body[field] === ""
-  );
-
-  if (missingFields.length > 0) {
-    return `Missing required fields: ${missingFields.join(", ")}`;
-  }
-
-  return null;
-};
-
 const createLoanPrediction = async (req, res, next) => {
   try {
-    const validationError = validatePredictionRequest(req.body);
-
-    if (validationError) {
-      res.status(400);
-      throw new Error(validationError);
-    }
-
     const mlPrediction = await predictLoanApproval(req.body);
 
     const savedPrediction = await createPrediction({
