@@ -5,6 +5,7 @@ dotenv.config();
 
 const healthRoutes = require("./routes/health.routes");
 const authRoutes = require("./routes/auth.routes");
+const predictionRoutes = require("./routes/prediction.routes");
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
 const { testDbConnection } = require("./config/db");
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/", healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/predict", predictionRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
