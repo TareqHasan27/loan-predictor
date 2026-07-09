@@ -8,7 +8,8 @@
     "dev": "nodemon server.js",
     "db:create-users": "node scripts/createUsersTable.js",
     "test:user-model": "node scripts/testUserModel.js",
-    "db:create-predictions": "node scripts/createPredictionsTable.js"
+    "db:create-predictions": "node scripts/createPredictionsTable.js",
+    "test:prediction-model": "node scripts/testPredictionModel.js"
   },
   "keywords": [
     "express",
