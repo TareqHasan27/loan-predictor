@@ -102,7 +102,19 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const getCurrentUser = async (req, res, next) => {
+  try {
+    res.json({
+      success: true,
+      user: req.user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  getCurrentUser,
 };
