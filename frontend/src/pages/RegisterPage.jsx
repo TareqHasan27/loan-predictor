@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { registerUser } from "../api/authApi";
+
 const initialFormData = {
   name: "",
   email: "",
@@ -8,6 +10,9 @@ const initialFormData = {
 
 function RegisterPage() {
   const [formData, setFormData] = useState(initialFormData);
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -18,10 +23,23 @@ function RegisterPage() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("Register form submitted:", formData);
+    setIsLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const data = await registerUser(formData);
+
+      setSuccessMessage(data.message || "Account created successfully.");
+      setFormData(initialFormData);
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -33,6 +51,14 @@ function RegisterPage() {
         <p className="form-intro">
           Register to submit loan applications and save your prediction history.
         </p>
+
+        {successMessage && (
+          <div className="alert alert-success">{successMessage}</div>
+        )}
+
+        {errorMessage && (
+          <div className="alert alert-error">{errorMessage}</div>
+        )}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -75,8 +101,8 @@ function RegisterPage() {
             />
           </div>
 
-          <button type="submit" className="primary-button">
-            Create account
+          <button type="submit" className="primary-button" disabled={isLoading}>
+            {isLoading ? "Creating account..." : "Create account"}
           </button>
         </form>
       </section>
