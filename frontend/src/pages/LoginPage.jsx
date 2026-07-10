@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { loginUser } from "../api/authApi";
+import { saveAuthData } from "../utils/authStorage";
 
 const initialFormData = {
   email: "",
@@ -8,6 +10,9 @@ const initialFormData = {
 };
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirectedFrom = location.state?.from?.pathname;
   const [formData, setFormData] = useState(initialFormData);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -32,11 +37,16 @@ function LoginPage() {
     try {
       const data = await loginUser(formData);
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      saveAuthData({
+        token: data.token,
+        user: data.user,
+      });
 
-      setSuccessMessage("Login successful. Token saved locally.");
+      setSuccessMessage("Login successful.");
       setFormData(initialFormData);
+      setTimeout(() => {
+        navigate(redirectedFrom || "/predict");
+      }, 600);
     } catch (error) {
       setErrorMessage(error.message);
     } finally {
@@ -54,6 +64,11 @@ function LoginPage() {
           Sign in to submit loan applications and view your prediction history.
         </p>
 
+        {redirectedFrom && (
+          <div className="alert alert-info">
+            Please log in to access {redirectedFrom}.
+          </div>
+        )}
         {successMessage && (
           <div className="alert alert-success">{successMessage}</div>
         )}
