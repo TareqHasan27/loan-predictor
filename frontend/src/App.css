@@ -115,6 +115,63 @@ h1 {
   color: #4b587c;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.secondary-link-button {
+  display: inline-block;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.secondary-link-button:hover {
+  background: #eff6ff;
+}
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.workflow-card {
+  padding: 20px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.workflow-card span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.workflow-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #172033;
+}
+
+.workflow-card p {
+  margin: 0;
+  color: #64748b;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
 .status-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -123,6 +180,7 @@ h1 {
 
 .status-item {
   padding: 18px;
+  margin-top: 8px;
   border-radius: 16px;
   background: #f8fafc;
   border: 1px solid #e5e7eb;
@@ -413,6 +471,19 @@ h1 {
   .auth-status {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .workflow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .primary-link-button,
+  .secondary-link-button {
+    text-align: center;
   }
 
   .wide-form-card {
