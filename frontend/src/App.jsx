@@ -5,6 +5,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import HistoryPage from "./pages/HistoryPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import PredictPage from "./pages/PredictPage";
 import RegisterPage from "./pages/RegisterPage";
 import "./App.css";
@@ -21,6 +22,8 @@ function App() {
           <Route path="/predict" element={<PredictPage />} />
           <Route path="/history" element={<HistoryPage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
